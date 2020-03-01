@@ -1,8 +1,30 @@
 # you dont know ros
 
+[toc]
+
 a repo for learn a particle filtering
 
+# current stage
+
+## stage 1 done 
+
+![stage1](./img/stage1done.jpg)
+
+now we know exactly where the robot is.
+
+we did this by getting the average of all particles x and y
+
+- search in ref_code.py for: **stage 1 done** . you can find the changes as follow:
+
+![img2](./img/stage1change.jpg)
+
 # useful res
+
+## links:
+
+https://github.com/mjl/particle_filter_demo
+https://github.com/mit-racecar/particle_filter
+https://github.com/leimao/Particle_Filter
 
 ## videos:
 
@@ -11,7 +33,7 @@ https://www.youtube.com/embed/TKCyAz063Yc
 
 ### backup:
 
-
+https://www.bilibili.com/video/av92849889/
 
 ## pdfs:
 
@@ -27,186 +49,85 @@ cp from
 
 http://ros-developer.com/2019/04/10/parcticle-filter-explained-with-python-code-from-scratch/
 
-```py
-import numpy as np
-import scipy as scipy
-from numpy.random import uniform
-import scipy.stats
+## about python
 
+### note!!
 
-np.set_printoptions(threshold=3)
-np.set_printoptions(suppress=True)
-import cv2
+>you can find all the related stuff for how to use `numpy` in subfolder: u_learn_numpy_here
 
+### Numpy-np.random.normal()正态分布
 
-def drawLines(img, points, r, g, b):
-    cv2.polylines(img, [np.int32(points)], isClosed=False, color=(r, g, b))
+https://www.cnblogs.com/cpg123/p/11779117.html
 
-def drawCross(img, center, r, g, b):
-    d = 5
-    t = 2
-    LINE_AA = cv2.LINE_AA if cv2.__version__[0] == '3' else cv2.CV_AA
-    color = (r, g, b)
-    ctrx = center[0,0]
-    ctry = center[0,1]
-    cv2.line(img, (ctrx - d, ctry - d), (ctrx + d, ctry + d), color, t, LINE_AA)
-    cv2.line(img, (ctrx + d, ctry - d), (ctrx - d, ctry + d), color, t, LINE_AA)
-    
+正态分布（又称高斯分布）的概率密度函数
 
-def mouseCallback(event, x, y, flags,null):
-    global center
-    global trajectory
-    global previous_x
-    global previous_y
-    global zs
-    
-    center=np.array([[x,y]])
-    trajectory=np.vstack((trajectory,np.array([x,y])))
-    #noise=sensorSigma * np.random.randn(1,2) + sensorMu
-    
-    if previous_x >0:
-        heading=np.arctan2(np.array([y-previous_y]), np.array([previous_x-x ]))
-
-        if heading>0:
-            heading=-(heading-np.pi)
-        else:
-            heading=-(np.pi+heading)
-            
-        distance=np.linalg.norm(np.array([[previous_x,previous_y]])-np.array([[x,y]]) ,axis=1)
-        
-        std=np.array([2,4])
-        u=np.array([heading,distance])
-        predict(particles, u, std, dt=1.)
-        zs = (np.linalg.norm(landmarks - center, axis=1) + (np.random.randn(NL) * sensor_std_err))
-        update(particles, weights, z=zs, R=50, landmarks=landmarks)
-        
-        indexes = systematic_resample(weights)
-        resample_from_index(particles, weights, indexes)
-
-    previous_x=x
-    previous_y=y
-    
-
-
-WIDTH=800
-HEIGHT=600
-WINDOW_NAME="Particle Filter"
-
-#sensorMu=0
-#sensorSigma=3
-
-sensor_std_err=5
-
-
-def create_uniform_particles(x_range, y_range, N):
-    particles = np.empty((N, 2))
-    particles[:, 0] = uniform(x_range[0], x_range[1], size=N)
-    particles[:, 1] = uniform(y_range[0], y_range[1], size=N)
-    return particles
-
-
-
-def predict(particles, u, std, dt=1.):
-    N = len(particles)
-    dist = (u[1] * dt) + (np.random.randn(N) * std[1])
-    particles[:, 0] += np.cos(u[0]) * dist
-    particles[:, 1] += np.sin(u[0]) * dist
-   
-def update(particles, weights, z, R, landmarks):
-    weights.fill(1.)
-    for i, landmark in enumerate(landmarks):
-       
-        distance=np.power((particles[:,0] - landmark[0])**2 +(particles[:,1] - landmark[1])**2,0.5)
-        weights *= scipy.stats.norm(distance, R).pdf(z[i])
 
  
-    weights += 1.e-300 # avoid round-off to zero
-    weights /= sum(weights)
-    
-def neff(weights):
-    return 1. / np.sum(np.square(weights))
+numpy中
 
-def systematic_resample(weights):
-    N = len(weights)
-    positions = (np.arange(N) + np.random.random()) / N
+numpy.random.normal(loc=0.0, scale=1.0, size=None) 
 
-    indexes = np.zeros(N, 'i')
-    cumulative_sum = np.cumsum(weights)
-    i, j = 0, 0
-    while i < N and j<N:
-        if positions[i] < cumulative_sum[j]:
-            indexes[i] = j
-            i += 1
-        else:
-            j += 1
-    return indexes
-    
-def estimate(particles, weights):
-    pos = particles[:, 0:1]
-    mean = np.average(pos, weights=weights, axis=0)
-    var = np.average((pos - mean)**2, weights=weights, axis=0)
-    return mean, var
+参数的意义为：
 
-def resample_from_index(particles, weights, indexes):
-    particles[:] = particles[indexes]
-    weights[:] = weights[indexes]
-    weights /= np.sum(weights)
+　　loc:float
 
-    
-x_range=np.array([0,800])
-y_range=np.array([0,600])
+　　概率分布的均值，对应着整个分布的中心center
 
-#Number of partciles
-N=400
+　　scale:float
 
-landmarks=np.array([ [144,73], [410,13], [336,175], [718,159], [178,484], [665,464]  ])
-NL = len(landmarks)
-particles=create_uniform_particles(x_range, y_range, N)
+　　概率分布的标准差，对应于分布的宽度，scale越大越矮胖，scale越小，越瘦高
+
+ 　 size:int or tuple of ints
+
+　　输出的shape，默认为None，只输出一个值
+
+我们更经常会用到np.random.randn(size)所谓标准正态分布（μ=0, σ=1），对应于np.random.normal(loc=0, scale=1, size)
 
 
-weights = np.array([1.0]*N)
+
+### numpy.random.pareto
+
+https://www.osgeo.cn/numpy/reference/generated/numpy.random.pareto.html
 
 
-# Create a black image, a window and bind the function to window
-img = np.zeros((HEIGHT,WIDTH,3), np.uint8)
-cv2.namedWindow(WINDOW_NAME)
-cv2.setMouseCallback(WINDOW_NAME,mouseCallback)
-
-center=np.array([[-10,-10]])
-
-trajectory=np.zeros(shape=(0,2))
-robot_pos=np.zeros(shape=(0,2))
-previous_x=-1
-previous_y=-1
-DELAY_MSEC=50
-
-while(1):
-
-    cv2.imshow(WINDOW_NAME,img)
-    img = np.zeros((HEIGHT,WIDTH,3), np.uint8)
-    drawLines(img, trajectory,   0,   255, 0)
-    drawCross(img, center, r=255, g=0, b=0)
-    
-    #landmarks
-    for landmark in landmarks:
-        cv2.circle(img,tuple(landmark),10,(255,0,0),-1)
-    
-    #draw_particles:
-    for particle in particles:
-        cv2.circle(img,tuple((int(particle[0]),int(particle[1]))),1,(255,255,255),-1)
-
-    if cv2.waitKey(DELAY_MSEC) & 0xFF == 27:
-        break
-    
-    cv2.circle(img,(10,10),10,(255,0,0),-1)
-    cv2.circle(img,(10,30),3,(255,255,255),-1)
-    cv2.putText(img,"Landmarks",(30,20),1,1.0,(255,0,0))
-    cv2.putText(img,"Particles",(30,40),1,1.0,(255,255,255))
-    cv2.putText(img,"Robot Trajectory(Ground truth)",(30,60),1,1.0,(0,255,0))
-
-    drawLines(img, np.array([[10,55],[25,55]]), 0, 255, 0)
-    
+numpy.random.pareto(a, size=None)
 
 
-cv2.destroyAllWindows()
-```
+从指定形状的Pareto II或Lomax分布中提取样品。
+
+Lomax或Pareto II分布是一个移位的Pareto分布。经典的帕累托分布可以从lomax分布中通过加1和乘以尺度参数得到。 m （见注释）。Lomax分布的最小值是零，而对于经典的Pareto分布，它是零。 mu ，其中标准帕累托分布有位置 mu = 1 . Lomax也可以被视为广义帕累托分布的简化版本（在Scipy中可用），比例设置为1，位置设置为零。
+
+帕累托分布必须大于零，并且在上面是无界的。它也被称为“80-20法则”。在这个分布中，80%的权重在最小的20%范围内，而其他20%则填充剩余的80%范围。
+
+参数: 
+a : 浮点数或类似浮点数的数组
+分布的形状。应大于零。
+
+size : int或int的元组，可选
+输出形状。如果给定的形状是，例如， (m, n, k) 然后 m * n * k 取样。如果尺寸是 None （默认），如果 a 是标量。否则， np.array(a).size 取样。
+
+返回: 
+out : ndarray或scalar
+从参数化帕累托分布中提取样本。
+
+参见
+scipy.stats.lomax
+概率密度函数、分布或累积密度函数等。
+scipy.stats.genpareto
+概率密度函数、分布或累积密度函数等。
+笔记
+
+帕累托分布的概率密度是
+
+p（x）=frac am^a x ^ a+1
+
+在哪里？ a 是形状和 m 规模。
+
+帕累托分布，以意大利经济学家维尔弗雷多·帕累托的名字命名，是一种适用于许多现实世界问题的幂律概率分布。在经济学领域之外，它通常被称为布拉德福德分布。帕累托发展了分布来描述经济中财富的分布。它还可以用于保险、网页访问统计、油田规模和许多其他问题，包括SourceForge项目的下载频率。 [1]. 它是所谓的“肥尾”分布之一。
+
+
+### numpy linalg模块 
+
+https://www.cnblogs.com/xieshengsen/p/6836430.html
+
+

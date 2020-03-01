@@ -1,0 +1,50 @@
+numpy.cumsum
+numpy.cumsum(a, axis=None, dtype=None, out=None)[源代码]
+返回元素沿给定轴的累积和。
+
+参数:	
+a : array_like
+输入数组。
+
+axis : 可选的
+计算累积和的轴。默认（无）是在展平的数组上计算cumsum。
+
+D型 : 可选类型
+返回数组的类型以及元素求和的累加器的类型。如果 dtype 未指定，它默认为 a 除非 a 具有精度小于默认平台整数的整数数据类型。在这种情况下，将使用默认的平台整数。
+
+out : ndarray，可选
+用于放置结果的可选输出数组。它必须具有与预期输出相同的形状和缓冲区长度，但如果需要，类型将被强制转换。见 doc.ufuncs （部分“输出参数”）了解更多详细信息。
+
+返回:	
+cumsum_along_axis : 恩达雷
+将返回包含结果的新数组，除非 out 是指定的，在这种情况下，引用 out 返回。结果与 a ，形状与 a 如果 axis 不是没有 a 是一维数组。
+
+参见
+sum
+求和数组元素。
+trapz
+使用复合梯形规则整合数组值。
+diff
+计算沿给定轴的第n个离散差。
+笔记
+
+使用整数类型时，算术是模块化的，溢出时不会产生错误。
+
+实例
+
+>>>
+>>> a = np.array([[1,2,3], [4,5,6]])
+>>> a
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> np.cumsum(a)
+array([ 1,  3,  6, 10, 15, 21])
+>>> np.cumsum(a, dtype=float)     # specifies type of output value(s)
+array([  1.,   3.,   6.,  10.,  15.,  21.])
+>>>
+>>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
+array([[1, 2, 3],
+       [5, 7, 9]])
+>>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
+array([[ 1,  3,  6],
+       [ 4,  9, 15]])

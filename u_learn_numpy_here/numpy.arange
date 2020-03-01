@@ -1,0 +1,38 @@
+numpy.arange
+numpy.arange([start, ]stop, [step, ]dtype=None)
+返回给定间隔内均匀间隔的值。
+
+在半开间隔内生成值 [start, stop) （换句话说，间隔包括 start 但不包括 stop ）对于整数参数，函数等效于python内置的 range 函数，但返回一个ndarray而不是一个列表。
+
+使用非整数步骤（如0.1）时，结果通常不一致。最好用一下 numpy.linspace 对于这些情况。
+
+参数:	
+开始 : 数字，可选
+间隔开始。间隔包括此值。默认开始值为0。
+
+stop : 数
+间隔结束。间隔不包括此值，除非在某些情况下 step 不是整数，浮点舍入会影响 out .
+
+step : 数字，可选
+值之间的间距。对于任何输出 out ，这是两个相邻值之间的距离， out[i+1] - out[i] . 默认步长为1。如果 step 指定为位置参数， start 也必须给出。
+
+D型 : D型
+输出数组的类型。如果 dtype 未给定，请从其他输入参数推断数据类型。
+
+返回:	
+阿朗格 : 恩达雷
+等距值数组。
+
+对于浮点参数，结果的长度为 ceil((stop - start)/step) . 由于浮点溢出，此规则可能导致 out 大于 stop .
+
+
+实例
+
+>>> np.arange(3)
+array([0, 1, 2])
+>>> np.arange(3.0)
+array([ 0.,  1.,  2.])
+>>> np.arange(3,7)
+array([3, 4, 5, 6])
+>>> np.arange(3,7,2)
+array([3, 5])

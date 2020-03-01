@@ -1,0 +1,49 @@
+# numpy.random.randn
+numpy.random.randn(d0, d1, ..., dn)
+从“标准正态”分布中返回一个（或多个）样本。
+
+如果提供了正的、类int或可转换int参数， randn 生成形状数组 (d0, d1, ..., dn) ，填充从平均值为0和方差为1的单变量“正态”（高斯）分布中抽样的随机浮点（如果有 d_i 是浮点数，首先通过截断转换为整数）。如果没有提供参数，则返回从分布中随机抽样的单个浮点。
+
+这是一个方便的功能。如果要使用以元组为第一个参数的接口，请使用 numpy.random.standard_normal 相反。
+
+参数:	
+D0，D1，…，DN : 可选的
+返回数组的维度应全部为正数。如果没有给出任何参数，则返回单个python float。
+
+返回:	
+Z : 日间或浮动
+A (d0, d1, ..., dn) -来自标准正态分布的浮点样本的整形数组，或者如果没有提供参数，则为单个此类浮点。
+
+参见
+standard_normal
+类似，但以元组为参数。
+笔记
+
+对于随机样本 N(\mu, \sigma^2) ，用途：
+
+sigma * np.random.randn(...) + mu
+
+实例
+
+>>> np.random.randn()
+2.1923875335537315 #random
+
+
+n（3，6.25）中的2×4个样本阵列：
+
+>>> 2.5 * np.random.randn(2, 4) + 3
+array([[-4.49401501,  4.00950034, -1.81814867,  7.29718677],  #random
+       [ 0.39924804,  4.68456316,  4.99394529,  4.84057254]]) #random
+
+# ref2
+
+https://blog.csdn.net/mingyuli/article/details/81260213
+
+1.numpy.random.rand() 
+官方文档中给出的用法是：numpy.random.rand(d0,d1,…dn) 
+以给定的形状创建一个数组，并在数组中加入在[0,1]之间均匀分布的随机样本。 
+
+2.numpy.random.randn() 
+官方文档中给出的用法是：numpy.random.rand(d0,d1,…dn) 
+以给定的形状创建一个数组，数组元素来符合标准正态分布N(0,1) 
+若要获得一般正态分布这里写图片描述则可用sigma * np.random.randn(…) + mu进行表示 
