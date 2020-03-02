@@ -96,8 +96,9 @@ def update(particles, weights, z, R, landmarks):
     for i, landmark in enumerate(landmarks):
         #tt 就是开平方距离
         distance=np.power((particles[:,0] - landmark[0])**2 +(particles[:,1] - landmark[1])**2,0.5)
-        #tt we fix weights by norm。 通过 正态分布 进行 w 的修正
-        weights *= scipy.stats.norm(distance, R).pdf(z[i])
+        #tt we fix weights by norm。 通过 正态分布 进行 w 的修正。
+        #tt then we change `scipy.stats.norm` to `scipy.stats.pareto`
+        weights *= scipy.stats.pareto.pdf(z[i], 1, distance)
 
  
     weights += 1.e-300 # avoid round-off to zero

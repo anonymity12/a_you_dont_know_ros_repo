@@ -6,6 +6,14 @@ a repo for learn a particle filtering
 
 # current stage
 
+## stage 2 done
+
+using `pareto`
+
+![stage2](./img/stage2usingPareto.gif)
+
+but here is some delay to locate the robot: aka, you need move longer time than it does in normal distribution way. guess it's the param issue, can we improve it by changing the detail params for `scipy.stats.pareto.pdf(z[i], 1, distance)`??
+
 ## stage 1 done 
 
 ![stage1](./img/stage1done.jpg)
