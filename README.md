@@ -1,6 +1,23 @@
 # you dont know ros
 
 [toc]
+current stage
+stage 4
+useful links:
+stage 3
+stage 2
+stage 1
+useful res for particle filter
+links:
+videos:
+backup:
+pdfs:
+ref code:
+about python
+note!!
+Numpy-np.random.normal()正态分布
+numpy.random.pareto
+numpy linalg模块
 
 a repo for learn *particle filtering*
 
@@ -22,6 +39,9 @@ a repo for learn *particle filtering*
 
 上式中，q代表你多相信之前的一次数据
 
+- search for **stage 4 change:** in finalCode.py to see changes
+
+
 ### useful links:
 
 https://www.researchgate.net/publication/224218731_Particle_Filtering_With_Dependent_Noise_Processes
@@ -42,7 +62,7 @@ here is the `sensor_std_error = 3` situation:
 ![s32](./img/stage3withNoise3.gif)
 
 
-- search for **stage 3 change:** in ref_code.py to see changes
+- search for **stage 3 change:** in finalCode.py to see changes
 
 
 ## stage 2 
@@ -53,7 +73,7 @@ here is the `sensor_std_error = 3` situation:
 
 but here is some delay to locate the robot: aka, you need move longer time than it does in normal distribution way. guess it's the param issue, can we improve it by changing the detail params for `scipy.stats.pareto.pdf(z[i], 1, distance)`??
 
-- search for **stage 2 change:** in ref_code.py to see changes
+- search for **stage 2 change:** in finalCode.py to see changes
 
 ## stage 1 
 
@@ -67,7 +87,7 @@ we did this by *take a mean of all the particles*
 
 >best estimate based on the particle with the highest weight or take a mean of all the particles
 
-- search for **stage 1 change:** in ref_code.py to see changes
+- search for **stage 1 change:** in finalCode.py to see changes
 
 you may find the changes looks like as follow:
 
