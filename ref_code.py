@@ -71,7 +71,8 @@ WINDOW_NAME="Particle Filter"
 #sensorMu=0
 #sensorSigma=3
 
-sensor_std_err=5
+# stage 3 change:
+sensor_std_err=3
 
 
 def create_uniform_particles(x_range, y_range, N):
@@ -98,6 +99,7 @@ def update(particles, weights, z, R, landmarks):
         distance=np.power((particles[:,0] - landmark[0])**2 +(particles[:,1] - landmark[1])**2,0.5)
         #tt we fix weights by norm。 通过 正态分布 进行 w 的修正。
         #tt then we change `scipy.stats.norm` to `scipy.stats.pareto`
+        # stage 2 change:
         weights *= scipy.stats.pareto.pdf(z[i], 1, distance)
 
  
@@ -174,7 +176,7 @@ while(1):
     #landmarks
     for landmark in landmarks:
         cv2.circle(img,tuple(landmark),10,(255,0,0),-1)
-    #tt stage 1 done: how: by: use the mean of all particle's x and y
+    #tt stage 1 change: how: by: use the mean of all particle's x and y
     sum_x = 0
     sum_y = 0
     #draw_particles:

@@ -6,23 +6,47 @@ a repo for learn a particle filtering
 
 # current stage
 
-## stage 2 done
+## stage 3
 
-using `pareto`
+- [x] add the sensor noise and to see what happend
+
+seems that bigger noise reduce the latency
+
+here is the `sensor_std_error = 15` situation:
+
+![s31](./img/stage3withNoise15.gif)
+
+here is the `sensor_std_error = 3` situation:
+
+![s32](./img/stage3withNoise3.gif)
+
+
+- search for **stage 3 change:** in ref_code.py to see changes
+
+
+## stage 2 
+
+- [x] using `pareto`
 
 ![stage2](./img/stage2usingPareto.gif)
 
 but here is some delay to locate the robot: aka, you need move longer time than it does in normal distribution way. guess it's the param issue, can we improve it by changing the detail params for `scipy.stats.pareto.pdf(z[i], 1, distance)`??
 
-## stage 1 done 
+- search for **stage 2 change:** in ref_code.py to see changes
+
+## stage 1 
+
+- [x] know the exact location of robot 
 
 ![stage1](./img/stage1done.jpg)
 
 now we know exactly where the robot is.
 
-we did this by getting the average of all particles x and y
+we did this by *getting the average of all particles' x and y*
 
-- search in ref_code.py for: **stage 1 done** . you can find the changes as follow:
+- search for **stage 1 change:** in ref_code.py to see changes
+
+you may find the changes looks like as follow:
 
 ![img2](./img/stage1change.jpg)
 
