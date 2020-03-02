@@ -2,9 +2,30 @@
 
 [toc]
 
-a repo for learn a particle filtering
+a repo for learn *particle filtering*
+
+- related keywords:
+
+马尔可夫，贝叶斯滤波，蒙特卡洛，numpy，scipy，后验概率分布， SIS: Sequential Importance Sampling, 粒子群优化
 
 # current stage
+
+## stage 4
+
+- [x] eliminate the noise effect on locating
+
+![s4](./img/stage4try.gif)
+
+思路：TCP round trip time 类似的自适应调整算法。因为每次增量应该相差不大（给定一个稳定的速度），so we have something like:
+
+    this_time_inc_val = (q * last_time_inc_val) + ((1 - q) * this_time_sensor_inc_var)// 0 < q < 1
+
+上式中，q代表你多相信之前的一次数据
+
+### useful links:
+
+https://www.researchgate.net/publication/224218731_Particle_Filtering_With_Dependent_Noise_Processes
+
 
 ## stage 3
 
@@ -42,7 +63,9 @@ but here is some delay to locate the robot: aka, you need move longer time than 
 
 now we know exactly where the robot is.
 
-we did this by *getting the average of all particles' x and y*
+we did this by *take a mean of all the particles*
+
+>best estimate based on the particle with the highest weight or take a mean of all the particles
 
 - search for **stage 1 change:** in ref_code.py to see changes
 
@@ -50,7 +73,7 @@ you may find the changes looks like as follow:
 
 ![img2](./img/stage1change.jpg)
 
-# useful res
+# useful res for particle filter
 
 ## links:
 
@@ -58,14 +81,24 @@ https://github.com/mjl/particle_filter_demo
 https://github.com/mit-racecar/particle_filter
 https://github.com/leimao/Particle_Filter
 
+
+> 粒子滤波的核心思想是随机采样+重要性重采样。既然不知道目标在哪里，那我就随机的放狗（随机采样）。放完狗后，根据特征相似度计算每个地区人和罪犯的相似度，然后在重要的地方再多放狗，不重要的地方就少放狗（重要性采样）。
+
+粒子滤波（Particle Filter）的通俗解释:
+
+https://blog.csdn.net/yq_forever/article/details/62217470
+
 ## videos:
 
 https://www.youtube.com/embed/7Z9fEpJOJdc
+
 https://www.youtube.com/embed/TKCyAz063Yc	
 
 ### backup:
 
 https://www.bilibili.com/video/av92849889/
+
+https://www.bilibili.com/video/av92879180
 
 ## pdfs:
 

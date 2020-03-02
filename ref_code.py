@@ -15,6 +15,7 @@ def drawLines(img, points, r, g, b):
 def drawCross(img, center, r, g, b):
     d = 5
     t = 2
+    #stage 1 change: remove deprecated code for my machine
     LINE_AA = cv2.LINE_AA 
     color = (r, g, b)
     ctrx = center[0,0]
@@ -30,6 +31,10 @@ def mouseCallback(event, x, y, flags,null):
     global previous_x
     global previous_y
     global zs
+    #tt for stage 4 change:
+    global previous_zs
+    global previous_move_inc
+    global this_time_inc_val
     
     center=np.array([[x,y]])
     #tt record the path (x,y) in a vertical array
@@ -53,6 +58,14 @@ def mouseCallback(event, x, y, flags,null):
         predict(particles, u, std, dt=1.)
         #tt z is robot 和 6 个landmarks 的传感器 距离。np.random.randn(NL) will give u 6 个来自 标正 的数据
         zs = (np.linalg.norm(landmarks - center, axis=1) + (np.random.randn(NL) * sensor_std_err))
+        #tt stage 4 change:
+        q = 0.1 # 10% to rely on previous data
+        if len(previous_zs) > 0:
+            this_time_inc_var = zs - previous_zs
+            this_time_inc_val = (q * previous_move_inc) + ((1 - q) * this_time_inc_var)
+            print(this_time_inc_val)
+            zs = previous_zs + this_time_inc_val
+
         #tt R maybe 方差
         update(particles, weights, z=zs, R=50, landmarks=landmarks)
         #tt 从weight 中抽取一些新的 ele
@@ -61,6 +74,9 @@ def mouseCallback(event, x, y, flags,null):
 
     previous_x=x
     previous_y=y
+    #tt for next loop
+    previous_zs = zs
+    previous_move_inc = this_time_inc_val    
     
 
 
@@ -72,7 +88,7 @@ WINDOW_NAME="Particle Filter"
 #sensorSigma=3
 
 # stage 3 change:
-sensor_std_err=3
+sensor_std_err=15
 
 
 def create_uniform_particles(x_range, y_range, N):
@@ -91,11 +107,11 @@ def predict(particles, u, std, dt=1.):
     #tt cause we know the angle and distance
     particles[:, 0] += np.cos(u[0]) * dist
     particles[:, 1] += np.sin(u[0]) * dist
-   
+#tt z 是robot 和 地标的六个距离
 def update(particles, weights, z, R, landmarks):
     weights.fill(1.)
     for i, landmark in enumerate(landmarks):
-        #tt 就是开平方距离
+        #tt 众多粒子和 地标 的开平方距离
         distance=np.power((particles[:,0] - landmark[0])**2 +(particles[:,1] - landmark[1])**2,0.5)
         #tt we fix weights by norm。 通过 正态分布 进行 w 的修正。
         #tt then we change `scipy.stats.norm` to `scipy.stats.pareto`
@@ -165,6 +181,11 @@ robot_pos=np.zeros(shape=(0,2))
 previous_x=-1
 previous_y=-1
 DELAY_MSEC=50
+# tt for stage 4 change: 
+previous_zs = []
+zs = []
+previous_move_inc = 0
+this_time_inc_val = 0
 
 while(1):
 
