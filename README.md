@@ -1,23 +1,38 @@
 # you dont know ros
 
 [toc]
+
 current stage
-stage 4
-useful links:
-stage 3
-stage 2
-stage 1
+
+|____stage 4
+
+|____stage 3
+
+|____stage 2
+
+|____stage 1
+
 useful res for particle filter
-links:
-videos:
-backup:
-pdfs:
-ref code:
+
+|____links:
+
+|____videos:
+
+|____backup:
+
+|____pdfs:
+
+|____ref code:
+
 about python
-note!!
-Numpy-np.random.normal()正态分布
-numpy.random.pareto
-numpy linalg模块
+
+|____note!!
+
+|____np.random.normal()正态分布
+
+|____numpy.random.pareto
+
+|____numpy linalg模块
 
 a repo for learn *particle filtering*
 
