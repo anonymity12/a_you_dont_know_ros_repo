@@ -1,4 +1,6 @@
-# you dont know ros
+# I dont know ros
+
+a repo for learn *particle filtering*
 
 [toc]
 
@@ -34,7 +36,6 @@ about python
 
 |____numpy linalg模块
 
-a repo for learn *particle filtering*
 
 - related keywords:
 
@@ -66,13 +67,19 @@ https://www.researchgate.net/publication/224218731_Particle_Filtering_With_Depen
 
 - [x] add the sensor noise and to see what happend
 
-seems that bigger noise reduce the latency
+**UPDATE!!:** 
 
-here is the `sensor_std_error = 15` situation:
+later in finalCode, I understand we should: using `noise` variable instead change `sensor_std_err` directly
+
+so here is the `sensorSigma = 300`  situation:
+
+![s30](./img/stage3withRealNoise.jpg)
+
+here is the `sensor_std_error = 15` situation:(no noise addon)
 
 ![s31](./img/stage3withNoise15.gif)
 
-here is the `sensor_std_error = 3` situation:
+here is the `sensor_std_error = 3` situation:(no noise addon)
 
 ![s32](./img/stage3withNoise3.gif)
 

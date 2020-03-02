@@ -76,7 +76,7 @@ WINDOW_NAME="Particle Filter"
 
 #tt stage 3 change:
 sensorMu=0
-sensorSigma=3
+sensorSigma=5
 
 sensor_std_err=10
 
